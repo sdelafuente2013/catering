@@ -6,9 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "image-prompts": "node scripts/generate-image-prompts.mjs",
+    "generate-images:featured": "node scripts/generate-openai-images.mjs --featured",
+    "generate-images:all": "node scripts/generate-openai-images.mjs --all"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "next": "16.2.1",
     "react": "19.2.4",
     "react-dom": "19.2.4"

@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Elegance Catering
 
-## Getting Started
+Sitio comercial en Next.js 16 para mostrar un catalogo real y chico de alquiler para eventos en Zona Norte.
 
-First, run the development server:
+## Catalogo actual
+
+- Pack Grande de Vasijas
+- Fuente de Chocolate
+- Robot LED / Personaje Animado
+
+## Stack
+
+- Next.js 16.2.1
+- React 19
+- Tailwind CSS 4
+- TypeScript
+
+## Scripts
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run lint
+npm run build
+npm run image-prompts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Imagenes
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+La web toma las imagenes desde `public/images`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Pendientes principales:
 
-## Learn More
+- `public/images/productos/pack-vasijas.png`
+- `public/images/productos/torre-chocolate.png`
+- `public/images/productos/robot-led.png`
 
-To learn more about Next.js, take a look at the following resources:
+Los prompts listos para generar las imagenes estan en:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [docs/prompts-imagenes-productos.md](./docs/prompts-imagenes-productos.md)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Estructura util
 
-## Deploy on Vercel
+- `src/config/data.ts`: datos del negocio, servicios, precios y FAQs
+- `src/app/`: paginas de App Router
+- `src/components/`: header, footer, cards e imagenes
+- `src/lib/contact.ts`: enlaces de WhatsApp, telefono y contacto
+- `scripts/generate-image-prompts.mjs`: genera el documento de prompts pendiente
+- `scripts/generate-openai-images.mjs`: flujo opcional para generar imagenes por API
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Criterio del proyecto
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Mostrar solo lo que realmente esta disponible hoy
+- Priorizar conversion mobile y cierre por WhatsApp
+- Mantener textos honestos, simples y faciles de actualizar

@@ -22,6 +22,9 @@
 
 # misc
 .DS_Store
+*.swp
+*.swo
+.idea/
 *.pem
 
 # debug
@@ -32,6 +35,10 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+
+# generated docs and local tooling
+docs/openai-image-run-*.json
+docs/openai-image-run-error.log
 
 # vercel
 .vercel
