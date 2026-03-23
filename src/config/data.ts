@@ -129,7 +129,7 @@ export const CATEGORIAS: Categoria[] = [
       "Barra movil luminosa con bartender profesional, cristaleria completa y opcion con o sin bebidas. El centro de atencion de tu fiesta.",
     icono: "🍸",
     imagen: "/images/productos/barra-movil.png",
-    imagePosition: "center 56%",
+    imagePosition: "center 23%",
   },
   {
     id: "manteleria",
@@ -165,7 +165,7 @@ export const CATEGORIAS: Categoria[] = [
       "El momento WOW de la noche. Entrada con impacto, fotos virales y una energia que cambia el clima de la fiesta.",
     icono: "🤖",
     imagen: "/images/productos/robot-led.png",
-    imagePosition: "center 34%",
+    imagePosition: "center 11%",
   },
 ];
 
@@ -548,7 +548,7 @@ export const SERVICIOS: Servicio[] = [
     minimoUnidades: 1,
     permiteMultiples: false,
     imagen: "/images/productos/barra-movil.png",
-    imagePosition: "center 56%",
+    imagePosition: "center 23%",
     icono: "🍸",
     destacado: true,
     disponible: true,
