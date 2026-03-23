@@ -69,7 +69,7 @@ export default function Footer() {
                   Cobertura en toda Zona Norte
                 </span>
                 <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-gray-300">
-                  Valores base publicados
+                  Precios base cuando aplica
                 </span>
               </div>
 
@@ -85,8 +85,8 @@ export default function Footer() {
                     href={WHATSAPP_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center rounded-full border border-white/10 px-5 py-3 text-sm font-semibold text-white transition-colors hover:border-primary/40 hover:bg-white/5"
-                >
+                    className="inline-flex items-center justify-center rounded-full border border-white/10 px-5 py-3 text-sm font-semibold text-white transition-colors hover:border-primary/40 hover:bg-white/5"
+                  >
                     Consultar por WhatsApp
                   </a>
                 ) : (

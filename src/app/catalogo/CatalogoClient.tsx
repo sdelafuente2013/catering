@@ -33,6 +33,29 @@ const ORDENES: Array<{ id: OrdenCatalogo; label: string }> = [
   { id: "precio-desc", label: "Mayor precio" },
 ];
 
+function compareByPrecio(
+  left: (typeof SERVICIOS)[number],
+  right: (typeof SERVICIOS)[number],
+  order: OrdenCatalogo
+): number {
+  const leftHasPrice = left.precioUnitario > 0;
+  const rightHasPrice = right.precioUnitario > 0;
+
+  if (leftHasPrice !== rightHasPrice) {
+    return leftHasPrice ? -1 : 1;
+  }
+
+  if (!leftHasPrice && !rightHasPrice) {
+    return left.nombre.localeCompare(right.nombre, "es");
+  }
+
+  if (order === "precio-asc") {
+    return left.precioUnitario - right.precioUnitario;
+  }
+
+  return right.precioUnitario - left.precioUnitario;
+}
+
 export default function CatalogoClient({
   availableImages,
   categoriaInicial,
@@ -114,12 +137,8 @@ export default function CatalogoClient({
     }
 
     resultado.sort((left, right) => {
-      if (orden === "precio-asc") {
-        return left.precioUnitario - right.precioUnitario;
-      }
-
-      if (orden === "precio-desc") {
-        return right.precioUnitario - left.precioUnitario;
+      if (orden === "precio-asc" || orden === "precio-desc") {
+        return compareByPrecio(left, right, orden);
       }
 
       if (left.destacado !== right.destacado) {
@@ -152,9 +171,9 @@ export default function CatalogoClient({
               Elegi la opcion que mejor encaja con tu evento.
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-gray-300">
-              Todas las opciones de esta pagina muestran un valor base orientativo
-              y estan listas para consultar por WhatsApp. Hoy trabajamos con pack
-              grande de vasijas, fuente de chocolate y robot LED.
+              Acá ves todo lo que hoy está disponible. Algunos servicios muestran
+              precio base y otros se cotizan segun cantidad, fecha, invitados,
+              personal o formato del evento.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
@@ -165,7 +184,7 @@ export default function CatalogoClient({
                 {CATEGORIAS.length} categorias
               </span>
               <span className="rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm text-gray-200">
-                Valores base publicados
+                Precios base cuando aplica
               </span>
             </div>
 
@@ -185,8 +204,48 @@ export default function CatalogoClient({
             </div>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            {categoriasConConteo.slice(0, 4).map((categoria, index) => (
+          <div className="hide-scrollbar -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:hidden">
+            {categoriasConConteo.map((categoria, index) => (
+              <button
+                key={categoria.id}
+                type="button"
+                onClick={() => setCategoriaActiva(categoria.id)}
+                className={`min-w-[84vw] max-w-[18rem] shrink-0 snap-start overflow-hidden rounded-[1.75rem] text-left transition-all hover:-translate-y-1 ${
+                  categoriaActiva === categoria.id
+                    ? "ring-2 ring-primary/55"
+                    : ""
+                }`}
+              >
+                <ProductImage
+                  src={categoria.imagen}
+                  hasImage={availableImageSet.has(categoria.imagen)}
+                  alt={categoria.nombre}
+                  imagePosition={categoria.imagePosition}
+                  fallbackIcon={categoria.icono}
+                  fallbackTitle={categoria.nombre}
+                  fallbackSubtitle={index === 0 ? "Disponible hoy" : "Catalogo actual"}
+                  sizes="(max-width: 1024px) 100vw, 24vw"
+                  className="h-52"
+                />
+                <div className="soft-panel rounded-b-[1.75rem] px-5 py-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <h2 className="text-lg font-semibold text-secondary">
+                      {categoria.nombre}
+                    </h2>
+                    <span className="rounded-full bg-accent px-3 py-1 text-xs font-semibold text-secondary">
+                      {categoria.cantidad}
+                    </span>
+                  </div>
+                  <p className="mt-2 text-sm leading-6 text-muted">
+                    {categoria.descripcion}
+                  </p>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          <div className="hidden gap-4 sm:grid sm:grid-cols-2 xl:grid-cols-3">
+            {categoriasConConteo.map((categoria, index) => (
               <button
                 key={categoria.id}
                 type="button"
@@ -238,7 +297,7 @@ export default function CatalogoClient({
                   </span>
                   <input
                     type="text"
-                    placeholder="Ej: robot LED, chocolate, vasijas..."
+                    placeholder="Ej: copa, plato, cascada, robot..."
                     value={busqueda}
                     onChange={(event) => setBusqueda(event.target.value)}
                     className="w-full rounded-2xl border border-line bg-white px-4 py-3.5 text-base text-secondary outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
@@ -269,7 +328,7 @@ export default function CatalogoClient({
                 <p className="text-sm text-muted">
                   {categoriaActivaData
                     ? `${categoriaActivaData.nombre}: ${categoriaActivaData.descripcion}`
-                    : "Mostrando todo el catalogo actual."}
+                    : "Mostrando todo el catalogo actual con precios base cuando aplica."}
                 </p>
                 <p className="mt-3 text-2xl font-semibold text-secondary">
                   {serviciosFiltrados.length} resultado
@@ -368,7 +427,7 @@ export default function CatalogoClient({
                         hasImage={availableImageSet.has(servicio.imagen)}
                         alt={`${servicio.nombre} para alquiler para eventos`}
                         imagePosition={servicio.imagePosition}
-                        fallbackIcon={categoria?.icono || "📦"}
+                        fallbackIcon={servicio.icono || categoria?.icono || "📦"}
                         fallbackTitle={servicio.nombre}
                         fallbackSubtitle={categoria?.nombre || "Producto"}
                         sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
@@ -465,7 +524,7 @@ export default function CatalogoClient({
               </h2>
               <p className="mt-4 text-sm leading-7 text-gray-300">
                 Si viste algo que te interesa, te respondemos con disponibilidad,
-                valor final orientado a tu evento y forma de reserva.
+                cotizacion segun tu evento y forma de reserva.
               </p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                 <Link

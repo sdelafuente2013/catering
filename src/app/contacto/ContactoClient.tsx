@@ -24,6 +24,42 @@ function openContactUrl(targetUrl: string): void {
   window.open(targetUrl, "_blank", "noopener,noreferrer");
 }
 
+const QUICK_INTENTS = [
+  {
+    label: "Vajilla",
+    asunto: "Vajilla para evento",
+    mensaje: "Quiero consultar por vajilla y cristaleria para mi evento.",
+  },
+  {
+    label: "Barra",
+    asunto: "Servicio de barra para evento",
+    mensaje:
+      "Quiero consultar por el servicio completo de barra movil con personal. Me interesa saber si puede ser con o sin bebidas y si tienen promociones.",
+  },
+  {
+    label: "Mantelería",
+    asunto: "Manteleria para evento",
+    mensaje: "Quiero consultar por manteleria para mi evento.",
+  },
+  {
+    label: "Mozos",
+    asunto: "Servicio de mozo para evento",
+    mensaje:
+      "Quiero consultar por servicio de mozo para mi evento. Me interesa saber disponibilidad, cantidad recomendada y modalidad de trabajo.",
+  },
+  {
+    label: "Cascada",
+    asunto: "Cascada de chocolate",
+    mensaje:
+      "Quiero consultar por la cascada de chocolate de 8 pisos para mi evento.",
+  },
+  {
+    label: "Robot LED",
+    asunto: "Robot LED para evento",
+    mensaje: "Quiero consultar por robot LED para mi evento.",
+  },
+] as const;
+
 export default function ContactoClient({
   minEventDate,
 }: {
@@ -45,6 +81,17 @@ export default function ContactoClient({
   );
   const phoneHref = getPhoneHref();
   const mapsHref = getMapsHref();
+
+  const aplicarIntentoRapido = (intent: (typeof QUICK_INTENTS)[number]) => {
+    setFormData((current) => ({
+      ...current,
+      asunto: intent.asunto,
+      mensaje:
+        current.mensaje.trim() && current.mensaje !== intent.mensaje
+          ? current.mensaje
+          : intent.mensaje,
+    }));
+  };
 
   const mensajeArmado = useMemo(() => {
     const lineas = [
@@ -211,6 +258,24 @@ export default function ContactoClient({
                     Dejanos los datos basicos y te orientamos enseguida.
                   </h2>
 
+                  <div className="mt-6 rounded-[1.5rem] bg-accent px-4 py-4">
+                    <p className="text-xs uppercase tracking-[0.18em] text-muted">
+                      Atajos rápidos
+                    </p>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {QUICK_INTENTS.map((intent) => (
+                        <button
+                          key={intent.label}
+                          type="button"
+                          onClick={() => aplicarIntentoRapido(intent)}
+                          className="rounded-full border border-line bg-white px-3 py-2 text-sm font-medium text-secondary transition-colors hover:border-primary/35 hover:text-primary"
+                        >
+                          {intent.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
                   <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
                     <div className="grid gap-4 sm:grid-cols-2">
                       <label className="block">
@@ -260,10 +325,10 @@ export default function ContactoClient({
                         <span className="mb-2 block text-sm font-medium text-secondary">
                           Asunto *
                         </span>
-                          <input
-                            type="text"
-                            required
-                            value={formData.asunto}
+                        <input
+                          type="text"
+                          required
+                          value={formData.asunto}
                           onChange={(event) =>
                             setFormData((current) => ({
                               ...current,
@@ -271,7 +336,7 @@ export default function ContactoClient({
                             }))
                           }
                           className="w-full rounded-2xl border border-line bg-white px-4 py-3 text-secondary outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
-                          placeholder="Ej: fuente de chocolate para cumpleanos"
+                          placeholder="Ej: vajilla para 80 personas"
                         />
                       </label>
 
@@ -357,7 +422,7 @@ export default function ContactoClient({
                           }))
                         }
                         className="w-full resize-none rounded-[1.75rem] border border-line bg-white px-4 py-3 text-secondary outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
-                        placeholder="Ej: necesito robot LED para un cumpleanos en Don Torcuato, de noche, para unas 60 personas."
+                        placeholder="Ej: necesito copas, platos y cubiertos para 80 personas en Don Torcuato, quiero consultar servicio de mozo para una recepcion o la cascada de chocolate para un cumpleanos."
                       />
                     </label>
 
@@ -395,6 +460,12 @@ export default function ContactoClient({
                       Ir al presupuesto
                     </Link>
                   )}
+                  <Link
+                    href="/presupuesto"
+                    className="inline-flex items-center justify-center rounded-full border border-white/10 px-6 py-3 text-sm font-semibold text-white transition-colors hover:border-primary/35 hover:bg-white/5"
+                  >
+                    Armar propuesta guiada
+                  </Link>
                 </div>
 
                 <div className="mt-6 space-y-4 text-sm text-gray-300">

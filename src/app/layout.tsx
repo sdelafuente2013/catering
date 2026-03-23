@@ -35,16 +35,23 @@ const cormorant = Cormorant_Garamond({
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: {
-    default: `${EMPRESA.nombre} | Pack grande de vasijas, fuente de chocolate y robot LED`,
+    default: `${EMPRESA.nombre} | Vajilla, barra, mozos, manteleria, cascada de chocolate y robot LED`,
     template: `%s | ${EMPRESA.nombre}`,
   },
   description: EMPRESA.descripcion,
   applicationName: EMPRESA.nombre,
   keywords: [
+    "alquiler de vajilla zona norte",
+    "alquiler de cristaleria zona norte",
+    "alquiler de barra zona norte",
+    "servicio de mozo zona norte",
+    "mozos para eventos zona norte",
+    "alquiler de manteleria zona norte",
+    "copas para eventos zona norte",
+    "platos para eventos zona norte",
+    "cascada de chocolate zona norte",
     "fuente de chocolate zona norte",
     "robot led eventos zona norte",
-    "pack de vasijas para eventos",
-    "vasijas para eventos zona norte",
     "eventos don torcuato",
     "alquiler eventos zona norte",
     "animacion eventos zona norte",
@@ -107,7 +114,9 @@ export default function RootLayout({
           />
         ))}
         <Header />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 pb-[calc(5.75rem+env(safe-area-inset-bottom))] md:pb-0">
+          {children}
+        </main>
         <Footer />
         <WhatsappButton />
         <Analytics />

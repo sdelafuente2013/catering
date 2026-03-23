@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Elegance Catering",
     short_name: "Elegance",
     description:
-      "Servicios seleccionados para eventos en Zona Norte: pack grande de vasijas, fuente de chocolate y robot LED.",
+      "Vajilla, barra, servicio de mozo, manteleria y servicios para eventos en Zona Norte: cascada de chocolate y robot LED.",
     start_url: "/",
     display: "standalone",
     background_color: "#171827",

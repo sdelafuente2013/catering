@@ -1,11 +1,12 @@
 # Elegance Catering
 
-Sitio comercial en Next.js 16 para mostrar un catalogo real y chico de alquiler para eventos en Zona Norte.
+Sitio comercial en Next.js 16 para mostrar un catalogo real de alquiler para eventos en Zona Norte.
 
 ## Catalogo actual
 
-- Pack Grande de Vasijas
-- Fuente de Chocolate
+- Vajilla y cristaleria para eventos
+- Piezas de servicio para mesas, buffet y estaciones
+- Cascada de Chocolate
 - Robot LED / Personaje Animado
 
 ## Stack
@@ -28,11 +29,7 @@ npm run image-prompts
 
 La web toma las imagenes desde `public/images`.
 
-Pendientes principales:
-
-- `public/images/productos/pack-vasijas.png`
-- `public/images/productos/torre-chocolate.png`
-- `public/images/productos/robot-led.png`
+Las imagenes reales de productos y categorias se pueden ir sumando en `public/images/productos`.
 
 Los prompts listos para generar las imagenes estan en:
 

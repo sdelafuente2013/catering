@@ -63,8 +63,8 @@ export default function NosotrosPage() {
                 <p className="mt-3 text-3xl font-semibold text-white">
                   {SERVICIOS.length}
                 </p>
-                <p className="mt-2 text-sm leading-6 text-gray-300">
-                  opciones reales para alquilar.
+              <p className="mt-2 text-sm leading-6 text-gray-300">
+                  opciones reales para alquilar hoy.
                 </p>
               </div>
               <div className="dark-panel rounded-[1.75rem] p-5">

@@ -13,7 +13,7 @@ import {
 export const metadata: Metadata = {
   title: "Galeria",
   description:
-    "Inspírate con la linea visual actual del catalogo: pack grande de vasijas, fuente de chocolate y robot LED para eventos.",
+    "Inspirate con la linea visual actual del catalogo: vajilla, barra, servicio de mozo, manteleria, cascada de chocolate y robot LED para eventos.",
   alternates: {
     canonical: "/galeria",
   },
@@ -79,7 +79,7 @@ export default function GaleriaPage() {
                     hasImage={hasAvailablePublicImage(service.imagen, availableImages)}
                     alt={service.nombre}
                     imagePosition={service.imagePosition}
-                    fallbackIcon={category?.icono || "📦"}
+                    fallbackIcon={service.icono || category?.icono || "📦"}
                     fallbackTitle={service.nombre}
                     fallbackSubtitle={category?.nombre || "Servicio"}
                     sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"

@@ -25,14 +25,25 @@ const OUTPUT_FORMAT = "png";
 const OUTPUT_COMPRESSION = 100;
 
 const FEATURED_IDS = new Set([
-  "pack-grande-vasijas",
+  "copa-agua",
+  "plato-llano-24cm",
+  "barra-movil",
+  "servicio-mozo",
+  "mantel-redondo",
+  "copa-vino",
   "fuente-chocolate",
   "robot-led",
 ]);
 
 const CATEGORY_DIRECTION = {
-  decoracion:
-    "Curated decorative event styling, grouped ceramic vasijas, premium reception setup, refined materials, warm editorial light.",
+  "vajilla-cristaleria":
+    "Premium event table styling with plates, glasses, cutlery and service pieces, refined materials, warm editorial light and realistic catering presentation.",
+  "barra-bebidas":
+    "Premium event bar and beverage service styling, polished cocktail station, glassware for short and long drinks, warm editorial lighting and realistic hospitality atmosphere.",
+  manteleria:
+    "Premium event linen styling with dressed tables and chairs, elegant folds, refined textures and polished catering atmosphere.",
+  "personal-servicio":
+    "Premium waiter service for events, polished hospitality presence, elegant reception atmosphere and believable service-ready staging.",
   fuentes:
     "Celebration centerpiece, abundant but elegant presentation, premium dessert and beverage styling, polished catering atmosphere.",
   animacion:
@@ -40,11 +51,17 @@ const CATEGORY_DIRECTION = {
 };
 
 const SERVICE_PROMPT_OVERRIDES = {
-  "pack-grande-vasijas": {
+  "barra-movil": {
     direction:
-      "This is a rental decor set for events, not a single home-decor vase. Show a coordinated pack of 8 to 15 ceramic vasijas with varied heights, sculptural silhouettes and premium neutral finishes, arranged on a welcome table, sweet table or decorative event corner.",
+      "Premium staffed mobile bar service for events, luminous bar front, assorted cocktail glassware, personalized jars, elegant reception atmosphere and believable hospitality staging.",
     extra:
-      "Do not generate a single vase. Do not generate a living-room or retail decor scene. The grouped vasijas must be the hero, with flowers used only minimally if needed.",
+      "Show a complete bar service setup, not a standalone empty furniture piece. Include subtle cues of bartending staff and optional beverage service without making people the main subject.",
+  },
+  "servicio-mozo": {
+    direction:
+      "Premium waiter service for events, elegant hospitality presence, service tray or table support context, polished reception atmosphere and believable staff staging.",
+    extra:
+      "Show an active event-service scene with professional waiter presentation. Avoid fashion-editorial posing, restaurant stock-photo tropes or chef styling.",
   },
 };
 
@@ -61,7 +78,7 @@ function buildCategoryPrompt(categoria) {
     `Create a premium commercial hero image for the catering rental brand ${EMPRESA.nombre}.`,
     `Category: ${categoria.nombre}.`,
     `Description: ${punctuate(categoria.descripcion)}`,
-    `Scene direction: ${CATEGORY_DIRECTION[categoria.id] ?? CATEGORY_DIRECTION.animacion}`,
+    `Scene direction: ${CATEGORY_DIRECTION[categoria.id] ?? CATEGORY_DIRECTION.fuentes}`,
     "Photorealistic catalog image, elegant event styling, no visible logos, no text overlay, no watermark, no clutter, no distorted objects.",
     "Use a warm neutral palette with ivory, champagne, soft gold and deep navy accents.",
     "Framing: landscape 3:2 composition for a website category banner.",
@@ -81,7 +98,7 @@ function buildProductPrompt(servicio) {
     `Category: ${categoria?.nombre ?? "Producto"}.`,
     `Description: ${punctuate(servicio.descripcion)}`,
     detailLine,
-    `Scene direction: ${override?.direction ?? CATEGORY_DIRECTION[servicio.categoriaId] ?? CATEGORY_DIRECTION.animacion}`,
+    `Scene direction: ${override?.direction ?? CATEGORY_DIRECTION[servicio.categoriaId] ?? CATEGORY_DIRECTION.fuentes}`,
     "Photorealistic catalog image, premium event styling, realistic materials, soft editorial lighting, clean composition, shallow depth of field.",
     override?.extra,
     "No visible logos, no text overlay, no watermark, no duplicated objects, no distorted geometry, no clutter.",

@@ -87,28 +87,36 @@ export function getLocalBusinessSchema() {
 }
 
 export function getServiceSchemas() {
-  return SERVICIOS.filter((servicio) => servicio.disponible).map((servicio) => ({
-    "@context": "https://schema.org",
-    "@type": "Service",
-    name: `${servicio.nombre} | ${EMPRESA.nombre}`,
-    description: servicio.descripcion,
-    provider: {
-      "@type": "LocalBusiness",
-      name: EMPRESA.nombre,
-      url: absoluteUrl("/"),
-    },
-    areaServed: EMPRESA.zonasCobertura.map((zona) => ({
-      "@type": "City",
-      name: zona,
-    })),
-    offers: {
-      "@type": "Offer",
+  return SERVICIOS.filter((servicio) => servicio.disponible).map((servicio) => {
+    const offer =
+      servicio.precioUnitario > 0
+        ? {
+            "@type": "Offer",
+            url: absoluteUrl(`/presupuesto?producto=${servicio.id}`),
+            priceCurrency: "ARS",
+            availability: "https://schema.org/InStock",
+            price: servicio.precioUnitario.toString(),
+          }
+        : undefined;
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: `${servicio.nombre} | ${EMPRESA.nombre}`,
+      description: servicio.descripcion,
+      provider: {
+        "@type": "LocalBusiness",
+        name: EMPRESA.nombre,
+        url: absoluteUrl("/"),
+      },
+      areaServed: EMPRESA.zonasCobertura.map((zona) => ({
+        "@type": "City",
+        name: zona,
+      })),
       url: absoluteUrl(`/presupuesto?producto=${servicio.id}`),
-      priceCurrency: "ARS",
-      price: servicio.precioUnitario.toString(),
-      availability: "https://schema.org/InStock",
-    },
-  }));
+      ...(offer ? { offers: offer } : {}),
+    };
+  });
 }
 
 export function getFaqSchema(faqs: FAQ[] = FAQS) {

@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { readdirSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { createRequire } from "node:module";
@@ -36,48 +36,78 @@ const NEGATIVE_PROMPT = [
 ].join(", ");
 
 const SERVICE_PROMPT_OVERRIDES = {
-  "pack-grande-vasijas": {
+  "barra-movil": {
     context:
-      "This is a rental catering service set for events, not home decor and not flower vases. Style a coordinated pack of 8 to 15 food-safe ceramic serving pieces: vasijas, bowls, compoteras, ensaladeras and fuentes with varied sizes and silhouettes, arranged on a premium buffet table, sweet table or catering service station prepared for an event.",
+      "Style it as a premium staffed mobile bar service for events, with a luminous bar front, assorted cocktail glassware, personalized jars and elegant reception styling.",
     composition:
-      "Show the full grouped set clearly, with many serving vessels visible at once, balanced spacing, different heights and enough catering context to read as one rental pack for food presentation and service. The pieces must be the hero, not flowers, furniture or room decor.",
+      "Show the full bar service clearly as one complete setup, with the illuminated bar as hero and enough supporting glassware and service context to communicate that this is a complete event service, not just furniture.",
     extraLines: [
-      "Important: do not generate decorative vases, flower vases or a retail-style single-item photo.",
-      "The objects should read as catering serviceware and food presentation pieces, not decoration-only items.",
-      "Show subtle food cues to make the use case obvious: some bowls may contain salads, bread, fruit, finger food, snacks or sweets, but the serving pieces must remain fully visible.",
-      "Materials and finishes should feel premium and event-ready: matte ceramic, stoneware, sand, ivory, beige, nude, off-white and warm taupe tones.",
-      "The result should look like a curated catering/event rental service for weddings, birthdays, receptions and corporate events in Buenos Aires, not a living-room decor catalog.",
+      "Important: this is not rented as a standalone bar counter. It must look like a complete bar service with staff-ready setup, cocktail presentation and optional beverage service.",
     ],
-    retryPrompt:
-      "Regenerate the image as a catering rental pack for food service: show a coordinated group of many ceramic serving vessels together, such as bowls, compoteras, ensaladeras and fuentes, styled on a buffet table or catering station for an event. Do not show decorative flower vases, do not show a living room, and make the use for serving food immediately obvious.",
-    negativeAdditions: [
-      "single vase",
-      "single centerpiece",
-      "decorative vase",
-      "flower vase",
-      "florero",
-      "jarron decorativo",
-      "living room decor",
-      "sofa",
-      "retail shelf",
-      "store display",
-      "packaging",
-      "price tag",
-      "boho home decor catalog",
-      "large flower bouquet",
-      "empty decorative centerpiece",
+  },
+  "mantel-redondo": {
+    composition:
+      "Show the round 3-meter tablecloth as the main hero with a clear fall, visible drape and elegant event styling. Avoid making chair covers, runners or centerpieces the main focus.",
+    extraLines: [
+      "Important: the round tablecloth itself must be the hero. Keep chair covers, bows and table runners secondary so the product reads clearly as Mantel Redondo 3 m.",
+    ],
+  },
+  "servicio-mozo": {
+    context:
+      "Style it as a premium waiter service for events, with elegant hospitality posture, polished uniform styling and refined reception or table-service atmosphere.",
+    composition:
+      "Show the waiter service clearly with professional presentation, service tray or table-support context and enough event styling to read as an active hospitality service, not a fashion portrait.",
+    extraLines: [
+      "Important: this is a hospitality service for events. The image must communicate attentive event service, not restaurant advertising or a studio portrait.",
     ],
   },
 };
 
+const RECOMMENDED_REFRESHES = [
+  {
+    id: "mantel-redondo",
+    reason:
+      "La imagen actual funciona y ya esta publicada, pero comunica tambien camino, cubre sillas y lazos. Una version mas enfocada en el mantel redondo ayudaria a diferenciar mejor cada producto de manteleria.",
+  },
+  {
+    id: "servicio-mozo",
+    reason:
+      "La imagen actual se ve bien, pero esta en formato horizontal mientras este servicio tambien se usa como tarjeta de producto. Una nueva version vertical 4:5 quedaria mas consistente con el resto del catalogo.",
+  },
+];
+
 const CATEGORY_GUIDES = {
-  decoracion: {
+  "vajilla-cristaleria": {
     composition:
-      "Show a curated grouped arrangement with multiple serving vessels clearly visible, balanced spacing and enough buffet context to read as event food serviceware.",
+      "Show the product with clear scale, refined composition and enough table context to understand its use within an event setup.",
     context:
-      "Style the set on a premium buffet table, sweet table or catering service station with realistic staging and refined materials.",
+      "Style it on a premium table, reception setup, buffet or coffee station with realistic event staging and refined materials.",
     categoryPrompt:
-      "Elegant grouped ceramic serving vessels for events, premium food presentation, refined buffet styling, soft editorial lighting and upscale catering mood.",
+      "Elegant table setting with plates, glasses, cutlery and service pieces for events, premium styling, soft editorial lighting and upscale catering mood.",
+  },
+  "barra-bebidas": {
+    composition:
+      "Show the product with clear scale, clean staging and enough beverage or service context to understand how it works at an event.",
+    context:
+      "Style it in a premium cocktail bar setup, beverage station or reception area with realistic event styling, polished materials and event-ready glassware.",
+    categoryPrompt:
+      "Premium staffed mobile bar service for events, elegant cocktail setup, luminous bar front, polished hospitality atmosphere and realistic glassware styling.",
+  },
+  manteleria: {
+    composition:
+      "Show the textile with clear drape, texture and enough table or chair context to understand how it dresses the event setup.",
+    context:
+      "Style it in a premium event table setting with realistic folds, elegant staging and refined color harmony.",
+    categoryPrompt:
+      "Premium event linen styling with dressed tables, elegant folds, refined textures and polished wedding-catering atmosphere.",
+  },
+  "personal-servicio": {
+    composition:
+      "Show the service with a clear hospitality focal point, polished uniform styling, elegant posture and enough event context to communicate attentive staff support.",
+    context:
+      "Style it in a premium reception or table-service environment with believable staff-ready staging, refined event atmosphere and discreet guest context.",
+    categoryPrompt:
+      "Premium waiter service for events, polished hospitality atmosphere, elegant reception styling and believable service presence.",
   },
   fuentes: {
     composition:
@@ -105,12 +135,37 @@ const CATEGORY_GUIDES = {
   },
 };
 
-function getPublicAssetPath(imagePath) {
-  return path.join(process.cwd(), "public", imagePath.replace(/^\/+/, ""));
+function collectAvailableImages(dirPath, baseUrl, collected) {
+  for (const entry of readdirSync(dirPath, { withFileTypes: true })) {
+    if (entry.name.startsWith(".")) {
+      continue;
+    }
+
+    const absolutePath = path.join(dirPath, entry.name);
+    const publicPath = path.posix.join(baseUrl, entry.name);
+
+    if (entry.isDirectory()) {
+      collectAvailableImages(absolutePath, publicPath, collected);
+      continue;
+    }
+
+    collected.push(publicPath);
+  }
 }
 
+function getAvailableImageSet() {
+  const publicImagesRoot = path.join(process.cwd(), "public", "images");
+  const collected = [];
+
+  collectAvailableImages(publicImagesRoot, "/images", collected);
+
+  return new Set(collected);
+}
+
+const availableImages = getAvailableImageSet();
+
 function isPendingImage(imagePath) {
-  return !existsSync(getPublicAssetPath(imagePath));
+  return !availableImages.has(imagePath);
 }
 
 function punctuate(value) {
@@ -165,6 +220,10 @@ const categoriasPendientes = CATEGORIAS.filter((categoria) =>
 const serviciosPendientes = SERVICIOS.filter((servicio) =>
   isPendingImage(servicio.imagen)
 );
+const refrescosRecomendados = RECOMMENDED_REFRESHES.map((item) => ({
+  ...item,
+  servicio: SERVICIOS.find((servicio) => servicio.id === item.id),
+})).filter((item) => item.servicio);
 
 const pendingNegativePromptParts = [
   NEGATIVE_PROMPT,
@@ -258,11 +317,45 @@ if (categoriasPendientes.length === 0 && serviciosPendientes.length === 0) {
   lines.push("");
   lines.push("No hay imagenes pendientes en este momento.");
   lines.push("");
-} else {
+}
+
+if (refrescosRecomendados.length > 0) {
+  lines.push("## Regeneracion Recomendada");
+  lines.push("");
+  lines.push(
+    "Estas imagenes ya existen y la web funciona con ellas, pero conviene regenerarlas si quieres dejar el catalogo mas fino y consistente."
+  );
+  lines.push("");
+
+  for (const item of refrescosRecomendados) {
+    const servicio = item.servicio;
+    lines.push(`### ${servicio.nombre}`);
+    lines.push("");
+    lines.push(`- ID: \`${servicio.id}\``);
+    lines.push(`- Ruta actual: \`public${servicio.imagen}\``);
+    lines.push(`- Motivo: ${item.reason}`);
+    lines.push("- Formato recomendado: `1536x1920` o superior");
+    lines.push(`- Alt sugerido: \`${buildAlt(servicio)}\``);
+    lines.push("");
+    lines.push("```text");
+    lines.push(buildServicePrompt(servicio));
+    lines.push("```");
+    lines.push("");
+  }
+}
+
+if (categoriasPendientes.length > 0 || serviciosPendientes.length > 0) {
   lines.push("## Negative Prompt Comun");
   lines.push("");
   lines.push("```text");
   lines.push(pendingNegativePrompt);
+  lines.push("```");
+  lines.push("");
+} else if (refrescosRecomendados.length > 0) {
+  lines.push("## Negative Prompt Comun");
+  lines.push("");
+  lines.push("```text");
+  lines.push(NEGATIVE_PROMPT);
   lines.push("```");
   lines.push("");
 }

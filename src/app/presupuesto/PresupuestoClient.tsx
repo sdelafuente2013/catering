@@ -89,6 +89,15 @@ function canEditCantidad(servicioId: string): boolean {
   return Boolean(servicio?.permiteMultiples);
 }
 
+const QUICK_START_IDS = [
+  "copa-agua",
+  "barra-movil",
+  "servicio-mozo",
+  "mantel-redondo",
+  "fuente-chocolate",
+  "robot-led",
+];
+
 export default function PresupuestoClient({
   availableImages,
   productoInicial,
@@ -129,6 +138,16 @@ export default function PresupuestoClient({
   const [resumenAbierto, setResumenAbierto] = useState(false);
   const busquedaDiferida = useDeferredValue(busquedaProductos);
   const phoneHref = getPhoneHref();
+  const quickStartServices = useMemo(
+    () =>
+      QUICK_START_IDS.map((serviceId) =>
+        SERVICIOS.find((servicio) => servicio.id === serviceId)
+      ).filter((servicio): servicio is (typeof SERVICIOS)[number] =>
+        Boolean(servicio?.disponible)
+      ),
+    []
+  );
+  const canSubmit = lineas.length > 0;
 
   const agregarProducto = (servicioId: string) => {
     const existe = lineas.some((linea) => linea.servicioId === servicioId);
@@ -226,6 +245,11 @@ export default function PresupuestoClient({
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (!canSubmit) {
+      setResumenAbierto(true);
+      return;
+    }
 
     const messageLines = [
       "Hola, quiero pedir presupuesto para un evento.",
@@ -339,41 +363,83 @@ export default function PresupuestoClient({
                 Zona Norte
               </span>
               <span className="rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm text-gray-200">
-                Valores base publicados
+                Consulta clara segun cantidad y formato
               </span>
             </div>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-3">
-            {SERVICIOS.map((service) => {
-              const category = CATEGORIAS.find(
-                (item) => item.id === service.categoriaId
-              );
-              const agregado = lineas.some((linea) => linea.servicioId === service.id);
+          <div className="space-y-4">
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary/80">
+                  Atajos para arrancar rapido
+                </p>
+                <p className="mt-2 max-w-lg text-sm leading-7 text-gray-300">
+                  Elegi una opcion frecuente y despues, si quieres, completas el
+                  resto con el selector detallado.
+                </p>
+              </div>
+              <span className="hidden rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-gray-300 sm:inline-flex">
+                Paso 1 simplificado
+              </span>
+            </div>
 
-              return (
-                <button
-                  key={service.id}
-                  type="button"
-                  onClick={() => !agregado && agregarProducto(service.id)}
-                  className={`overflow-hidden rounded-[2rem] text-left transition-all hover:-translate-y-1 ${
-                    agregado ? "ring-2 ring-primary/55" : ""
-                  }`}
-                >
-                  <ProductImage
-                    src={service.imagen}
-                    hasImage={availableImageSet.has(service.imagen)}
-                    alt={service.nombre}
-                    imagePosition={service.imagePosition}
-                    fallbackIcon={category?.icono || "📦"}
-                    fallbackTitle={service.nombre}
-                    fallbackSubtitle={agregado ? "Seleccionado" : "Disponible hoy"}
-                    sizes="(max-width: 1024px) 100vw, 24vw"
-                    className="h-48"
-                  />
-                </button>
-              );
-            })}
+            <div className="hide-scrollbar -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3">
+              {quickStartServices.map((service) => {
+                const category = CATEGORIAS.find(
+                  (item) => item.id === service.categoriaId
+                );
+                const agregado = lineas.some(
+                  (linea) => linea.servicioId === service.id
+                );
+
+                return (
+                  <button
+                    key={service.id}
+                    type="button"
+                    onClick={() => !agregado && agregarProducto(service.id)}
+                    className={`min-w-[84vw] max-w-[19rem] snap-center overflow-hidden rounded-[2rem] text-left transition-all hover:-translate-y-1 sm:min-w-0 sm:max-w-none ${
+                      agregado ? "ring-2 ring-primary/55" : ""
+                    }`}
+                  >
+                    <ProductImage
+                      src={service.imagen}
+                      hasImage={availableImageSet.has(service.imagen)}
+                      alt={service.nombre}
+                      imagePosition={service.imagePosition}
+                      fallbackIcon={service.icono || category?.icono || "📦"}
+                      fallbackTitle={service.nombre}
+                      fallbackSubtitle={agregado ? "Seleccionado" : "Disponible hoy"}
+                      sizes="(max-width: 640px) 82vw, (max-width: 1024px) 48vw, 24vw"
+                      className="h-44"
+                    />
+                    <div className="border-x border-b border-white/10 bg-white/[0.04] px-5 py-4">
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <p className="text-base font-semibold text-white">
+                            {service.nombre}
+                          </p>
+                          <p className="mt-2 text-sm text-primary">
+                            {formatPrecioOConsulta(
+                              service.precioUnitario,
+                              service.precioDesde
+                            )}
+                          </p>
+                        </div>
+                        <span className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-200">
+                          {category?.nombre}
+                        </span>
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            <p className="text-sm leading-7 text-gray-300">
+              O baja y usa el selector completo si necesitas combinar varias
+              piezas de vajilla, barra, manteleria o servicios especiales.
+            </p>
           </div>
         </div>
       </section>
@@ -536,16 +602,16 @@ export default function PresupuestoClient({
                         value={busquedaProductos}
                         onChange={(event) => setBusquedaProductos(event.target.value)}
                         className="w-full rounded-2xl border border-line bg-white px-4 py-3 text-secondary outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
-                        placeholder="Fuente, robot, pack de vasijas..."
+                        placeholder="Ej: copa, plato, cascada, robot..."
                       />
                     </label>
                   </div>
 
-                  <div className="mt-6 flex flex-wrap gap-2">
+                  <div className="hide-scrollbar -mx-1 mt-6 flex gap-2 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
                     <button
                       type="button"
                       onClick={() => setCategoriaFiltro("todos")}
-                      className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                      className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                         categoriaFiltro === "todos"
                           ? "bg-secondary text-white"
                           : "bg-white text-muted hover:bg-accent"
@@ -558,7 +624,7 @@ export default function PresupuestoClient({
                         key={categoria.id}
                         type="button"
                         onClick={() => setCategoriaFiltro(categoria.id)}
-                        className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                        className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                           categoriaFiltro === categoria.id
                             ? "bg-primary text-secondary"
                             : "bg-white text-muted hover:bg-accent"
@@ -591,7 +657,9 @@ export default function PresupuestoClient({
                           }`}
                         >
                           <div className="flex items-start justify-between gap-3">
-                            <span className="text-2xl">{categoria?.icono}</span>
+                            <span className="text-2xl">
+                              {servicio.icono || categoria?.icono}
+                            </span>
                             {agregado && (
                               <span className="rounded-full bg-primary px-2.5 py-1 text-[11px] font-bold text-secondary">
                                 Agregado
@@ -649,8 +717,10 @@ export default function PresupuestoClient({
                               className="rounded-[1.75rem] border border-line bg-white px-5 py-5"
                             >
                               <div className="flex items-start justify-between gap-3">
-                                <div className="flex items-start gap-3">
-                                  <span className="text-2xl">{categoria?.icono}</span>
+                              <div className="flex items-start gap-3">
+                                  <span className="text-2xl">
+                                    {servicio.icono || categoria?.icono}
+                                  </span>
                                   <div>
                                     <p className="font-semibold text-secondary">
                                       {servicio.nombre}
@@ -736,9 +806,16 @@ export default function PresupuestoClient({
                     <ResumenConsulta lineas={lineas} estimacion={estimacion} />
                     <button
                       type="submit"
-                      className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-primary px-6 py-4 text-base font-semibold text-secondary transition-colors hover:bg-primary-dark"
+                      disabled={!canSubmit}
+                      className={`mt-6 inline-flex w-full items-center justify-center rounded-full px-6 py-4 text-base font-semibold transition-colors ${
+                        canSubmit
+                          ? "bg-primary text-secondary hover:bg-primary-dark"
+                          : "cursor-not-allowed bg-line text-muted"
+                      }`}
                     >
-                      Enviar propuesta por WhatsApp
+                      {canSubmit
+                        ? "Enviar propuesta por WhatsApp"
+                        : "Elegi al menos una opcion"}
                     </button>
                     <p className="mt-3 text-center text-xs text-muted">
                       Te responderemos por WhatsApp con disponibilidad, valor final y forma de reserva.
@@ -784,13 +861,25 @@ export default function PresupuestoClient({
                         )
                       : "Cotizacion personalizada"}
                   </p>
+                  <p className="mt-1 text-xs text-muted">
+                    {lineas.length > 0
+                      ? `${lineas.length} ${
+                          lineas.length === 1 ? "opcion seleccionada" : "opciones seleccionadas"
+                        }`
+                      : "Elegi una opcion para continuar"}
+                  </p>
                 </button>
 
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-3 text-sm font-semibold text-secondary transition-colors hover:bg-primary-dark"
+                  disabled={!canSubmit}
+                  className={`inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition-colors ${
+                    canSubmit
+                      ? "bg-primary text-secondary hover:bg-primary-dark"
+                      : "cursor-not-allowed bg-line text-muted"
+                  }`}
                 >
-                  WhatsApp
+                  {canSubmit ? "WhatsApp" : "Elegi 1+"}
                 </button>
               </div>
             </div>

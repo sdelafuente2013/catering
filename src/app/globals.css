@@ -36,14 +36,25 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
   text-rendering: optimizeLegibility;
+  overflow-x: clip;
 }
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body::selection {
   background: rgba(201, 168, 76, 0.2);
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 /* Animaciones */
@@ -151,4 +162,20 @@ body::selection {
     radial-gradient(circle at top right, rgba(201, 168, 76, 0.22), transparent 26%),
     radial-gradient(circle at bottom left, rgba(255, 255, 255, 0.08), transparent 22%),
     linear-gradient(180deg, #171827 0%, #10111b 100%);
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+@media (max-width: 639px) {
+  .eyebrow {
+    gap: 0.45rem;
+    padding: 0.4rem 0.7rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+  }
 }

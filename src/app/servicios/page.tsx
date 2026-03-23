@@ -17,7 +17,7 @@ import {
 export const metadata: Metadata = {
   title: "Servicios",
   description:
-    "Conoce las opciones reales disponibles hoy: pack grande de vasijas, fuente de chocolate y robot LED para eventos en Zona Norte.",
+    "Conoce las opciones reales disponibles hoy: vajilla, barra, servicio de mozo, manteleria, cascada de chocolate y robot LED para eventos en Zona Norte.",
   alternates: {
     canonical: "/servicios",
   },
@@ -35,7 +35,7 @@ export default function ServiciosPage() {
             Servicios disponibles hoy
           </span>
           <h1 className="mt-6 max-w-5xl font-display text-4xl font-semibold leading-none text-white sm:text-5xl lg:text-6xl">
-            Una seleccion puntual y pensada para resolver bien una parte del evento.
+            Un catalogo actual para mesas, recepciones y momentos especiales.
           </h1>
           <p className="mt-5 max-w-3xl text-lg leading-8 text-gray-300">
             {EMPRESA.descripcion} Si buscas algo fuera de estas opciones, igual
@@ -62,7 +62,7 @@ export default function ServiciosPage() {
                     hasImage={hasAvailablePublicImage(service.imagen, availableImages)}
                     alt={service.nombre}
                     imagePosition={service.imagePosition}
-                    fallbackIcon={category?.icono || "📦"}
+                    fallbackIcon={service.icono || category?.icono || "📦"}
                     fallbackTitle={service.nombre}
                     fallbackSubtitle={category?.nombre || "Servicio"}
                     sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"

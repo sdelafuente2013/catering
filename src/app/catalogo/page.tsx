@@ -6,7 +6,7 @@ import { getAvailablePublicImages } from "@/lib/publicImages";
 export const metadata: Metadata = {
   title: "Catálogo completo",
   description:
-    "Explora las opciones reales disponibles hoy: pack grande de vasijas, fuente de chocolate y robot LED para eventos en Zona Norte.",
+    "Explora las opciones reales disponibles hoy: vajilla, barra, servicio de mozo, manteleria, cascada de chocolate y robot LED para eventos en Zona Norte.",
   alternates: {
     canonical: "/catalogo",
   },

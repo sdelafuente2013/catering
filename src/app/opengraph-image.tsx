@@ -128,7 +128,7 @@ export default function OpenGraphImage() {
                 fontWeight: 700,
               }}
             >
-              Pack de vasijas, fuente de chocolate y robot LED.
+              Vajilla, barra, mozos, manteleria, cascada de chocolate y robot LED.
             </div>
             <div
               style={{
@@ -137,7 +137,7 @@ export default function OpenGraphImage() {
                 color: "#dad6cf",
               }}
             >
-              Catalogo real, valores base desde y cierre rapido por WhatsApp.
+              Catalogo real, consulta clara y cierre rapido por WhatsApp.
             </div>
           </div>
 
@@ -149,8 +149,10 @@ export default function OpenGraphImage() {
             }}
           >
             {[
-              "Pack Grande de Vasijas",
-              "Fuente de Chocolate",
+              "Vajilla y Cristaleria",
+              "Barra y Bebidas",
+              "Manteleria",
+              "Cascada de Chocolate",
               "Robot LED / Personaje Animado",
             ].map((item) => (
               <div
