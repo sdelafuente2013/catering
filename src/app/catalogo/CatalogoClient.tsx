@@ -434,9 +434,9 @@ export default function CatalogoClient({
                         loading={index === 0 ? "eager" : "lazy"}
                         className="h-56"
                       />
-                      {servicio.destacado && (
+                      {servicio.badge && (
                         <span className="absolute right-4 top-4 rounded-full bg-primary px-3 py-1 text-xs font-bold text-secondary">
-                          Disponible
+                          {servicio.badge}
                         </span>
                       )}
                     </div>

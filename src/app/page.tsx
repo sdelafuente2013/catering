@@ -8,7 +8,9 @@ import {
   EMPRESA,
   FAQS,
   FEATURED_IDS,
+  PACKS_SUGERIDOS,
   SERVICIOS,
+  SOCIAL_PROOF,
   formatDetallePrecio,
   formatPrecioOConsulta,
 } from "@/config/data";
@@ -31,19 +33,22 @@ const FEATURED_SERVICES = SERVICIOS.filter((service) =>
 
 const DIFFERENTIATORS = [
   {
-    title: "Cotizacion clara",
+    stat: SOCIAL_PROOF.eventosRealizados,
+    title: "Eventos realizados",
     description:
-      "Ves solo lo que hoy esta disponible, con valores base cuando aplica y cotizacion clara para el resto.",
+      "Casamientos, cumpleanos, corporativos y celebraciones en toda Zona Norte con vajilla premium y servicio profesional.",
   },
   {
-    title: "Respuesta rapida",
+    stat: "Premium",
+    title: "Linea restaurante",
     description:
-      "La idea es que puedas escribir, confirmar disponibilidad y avanzar por WhatsApp sin perder tiempo.",
+      "Toda la vajilla, cristaleria y cubiertos son de linea premium restaurante. La misma calidad que los mejores salones.",
   },
   {
-    title: "Buena presencia",
+    stat: "En minutos",
+    title: "Cotizacion por WhatsApp",
     description:
-      "Si quieres sumar servicio, presencia visual o animacion, armamos una propuesta prolija y bien presentada.",
+      "Escribis, te confirmamos disponibilidad y precio. Sin formularios largos, sin esperas. Cotizar es gratis.",
   },
 ];
 
@@ -81,17 +86,18 @@ function HeroSection({ availableImages }: { availableImages: string[] }) {
         <div className="relative z-10 min-w-0">
           <span className="eyebrow text-primary">
             <span className="accent-dot" />
-            Alquiler para eventos en Zona Norte
+            Vajilla premium de restaurante para eventos
           </span>
 
           <h1 className="mt-6 max-w-4xl font-display text-3xl font-semibold leading-[0.95] text-white sm:text-5xl lg:text-6xl">
-            Servicios para eventos que suman presencia y se reservan facil.
+            Que tu evento se vea como un restaurante de primer nivel.
           </h1>
 
           <p className="mt-5 max-w-2xl text-base leading-7 text-gray-300 sm:text-lg sm:leading-8">
-            {EMPRESA.descripcion} Si buscas una opcion puntual, bien resuelta y
-            con respuesta rapida, hoy puedes consultar vajilla, barra,
-            servicio de mozo, manteleria, cascada de chocolate y robot LED.
+            Vajilla de porcelana, cristaleria y cubiertos de linea premium restaurante.
+            Barra movil con bartender, mozos profesionales, manteleria, cascada
+            de chocolate y robot LED. Todo lo que necesitas para que tus
+            invitados noten la diferencia.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -122,11 +128,11 @@ function HeroSection({ availableImages }: { availableImages: string[] }) {
           </div>
 
           <div className="mt-8 flex flex-wrap gap-3">
-            <span className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1.5 text-sm text-gray-200">
-              Precios base cuando aplica
+            <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary">
+              Linea premium restaurante
             </span>
             <span className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1.5 text-sm text-gray-200">
-              Atencion 24 horas
+              Cotizar es gratis
             </span>
             <span className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1.5 text-sm text-gray-200">
               Zona Norte
@@ -136,35 +142,35 @@ function HeroSection({ availableImages }: { availableImages: string[] }) {
           <div className="mt-8 grid gap-3 sm:grid-cols-3">
             <div className="dark-panel rounded-[1.75rem] p-5">
               <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
-                Disponible hoy
+                Eventos realizados
               </p>
-              <p className="mt-2 text-xl font-semibold text-white">
-                {SERVICIOS.length} opciones reales
+              <p className="mt-2 text-xl font-semibold text-gradient-gold">
+                {SOCIAL_PROOF.eventosRealizados}
               </p>
               <p className="mt-2 text-sm leading-6 text-gray-300">
-                Elegis sin perder tiempo con opciones que hoy no estan disponibles.
+                Casamientos, cumpleanos y corporativos en Zona Norte.
               </p>
             </div>
             <div className="dark-panel rounded-[1.75rem] p-5">
               <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
-                Atencion
+                Calidad
               </p>
               <p className="mt-2 text-xl font-semibold text-white">
-                WhatsApp directo
+                Premium restaurante
               </p>
               <p className="mt-2 text-sm leading-6 text-gray-300">
-                La forma mas rapida de confirmar fecha, zona y cotizacion segun tu evento.
+                La misma vajilla y cristaleria que usan los mejores salones.
               </p>
             </div>
             <div className="dark-panel rounded-[1.75rem] p-5">
               <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
-                Cobertura
+                Cotizacion
               </p>
               <p className="mt-2 text-xl font-semibold text-white">
-                {EMPRESA.localidad}
+                Gratis y rapida
               </p>
               <p className="mt-2 text-sm leading-6 text-gray-300">
-                Don Torcuato y gran parte de la franja norte del GBA.
+                Escribis por WhatsApp y te respondemos con precio en minutos.
               </p>
             </div>
           </div>
@@ -273,8 +279,11 @@ function TrustSection() {
         <div className="grid gap-5 lg:grid-cols-3">
           {DIFFERENTIATORS.map((item) => (
             <div key={item.title} className="soft-panel rounded-[1.75rem] p-6">
-              <h3 className="text-xl font-semibold text-secondary">{item.title}</h3>
-              <p className="mt-3 text-sm leading-7 text-muted">
+              <p className="font-display text-3xl font-semibold text-gradient-gold">
+                {item.stat}
+              </p>
+              <h3 className="mt-3 text-lg font-semibold text-secondary">{item.title}</h3>
+              <p className="mt-2 text-sm leading-7 text-muted">
                 {item.description}
               </p>
             </div>
@@ -294,9 +303,9 @@ function CurrentOfferSection({
     <section className="section-shell py-20 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          eyebrow="Lo que ofrecemos hoy"
-          title="Destacados del catalogo actual"
-          description="Mostramos una seleccion corta para decidir rapido desde la home. En el catalogo completo puedes ver toda la vajilla, la cristaleria y los servicios disponibles."
+          eyebrow="Catalogo premium"
+          title="Lo mas elegido para eventos en Zona Norte"
+          description="Vajilla de porcelana, cristaleria profesional, cubiertos de restaurante, barra con bartender y mas. Todo linea premium, listo para tu evento."
         />
 
         <div className="hide-scrollbar scroll-fade-right -mx-4 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 md:hidden">
@@ -323,9 +332,9 @@ function CurrentOfferSection({
                     loading={index === 0 ? "eager" : "lazy"}
                     className="h-60"
                   />
-                  {service.destacado && (
+                  {service.badge && (
                     <span className="absolute right-4 top-4 rounded-full bg-primary px-3 py-1 text-xs font-bold text-secondary">
-                      Disponible ahora
+                      {service.badge}
                     </span>
                   )}
                 </div>
@@ -405,9 +414,9 @@ function CurrentOfferSection({
                     loading={index === 0 ? "eager" : "lazy"}
                     className="h-60"
                   />
-                  {service.destacado && (
+                  {service.badge && (
                     <span className="absolute right-4 top-4 rounded-full bg-primary px-3 py-1 text-xs font-bold text-secondary">
-                      Disponible ahora
+                      {service.badge}
                     </span>
                   )}
                 </div>
@@ -525,6 +534,104 @@ function ProcessSection() {
   );
 }
 
+function TestimonialsSection() {
+  return (
+    <section className="section-shell bg-mesh-dark py-20 text-white lg:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-3xl text-center">
+          <span className="eyebrow text-primary">
+            <span className="accent-dot" />
+            Lo que dicen nuestros clientes
+          </span>
+          <h2 className="mt-5 font-display text-4xl font-semibold leading-none text-white sm:text-5xl">
+            {SOCIAL_PROOF.eventosRealizados} eventos y la misma atencion en cada uno.
+          </h2>
+        </div>
+
+        <div className="mt-10 grid gap-6 lg:grid-cols-3">
+          {SOCIAL_PROOF.testimonios.map((testimonio) => (
+            <div
+              key={testimonio.autor}
+              className="dark-panel rounded-[2rem] p-6"
+            >
+              <div className="flex gap-1 text-primary">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <svg key={i} className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              <p className="mt-4 text-sm leading-7 text-gray-300">
+                &ldquo;{testimonio.texto}&rdquo;
+              </p>
+              <div className="mt-5 border-t border-white/8 pt-4">
+                <p className="font-semibold text-white">{testimonio.autor}</p>
+                <p className="text-sm text-gray-400">{testimonio.evento}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PacksSection() {
+  return (
+    <section className="section-shell py-20 lg:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-3xl text-center">
+          <span className="eyebrow text-primary">
+            <span className="accent-dot" />
+            Packs recomendados
+          </span>
+          <h2 className="mt-5 font-display text-4xl font-semibold leading-none text-secondary sm:text-5xl">
+            Combinar servicios es mas facil y queda mucho mejor.
+          </h2>
+          <p className="mt-4 text-base leading-7 text-muted sm:text-lg">
+            Los eventos que mas impactan son los que combinan vajilla, servicio y momentos especiales. Estos packs son los mas pedidos.
+          </p>
+        </div>
+
+        <div className="mt-10 grid gap-6 lg:grid-cols-3">
+          {PACKS_SUGERIDOS.map((pack) => (
+            <div key={pack.id} className="soft-panel rounded-[2rem] p-6">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/12 text-3xl">
+                {pack.icono}
+              </div>
+              <h3 className="mt-5 text-xl font-semibold text-secondary">
+                {pack.nombre}
+              </h3>
+              <p className="mt-2 text-sm leading-7 text-muted">
+                {pack.descripcion}
+              </p>
+              <ul className="mt-4 space-y-2">
+                {pack.incluye.map((item) => (
+                  <li key={item} className="flex items-center gap-2 text-sm text-secondary">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-success/12 text-xs text-success">
+                      ✓
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-4 rounded-full bg-accent px-3 py-1.5 text-center text-xs font-semibold text-secondary">
+                Ideal para: {pack.idealPara}
+              </p>
+              <Link
+                href="/presupuesto"
+                className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-secondary px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-secondary/90"
+              >
+                Cotizar este pack gratis
+              </Link>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function FAQPreviewSection() {
   return (
     <section className="section-shell py-20 lg:py-24">
@@ -575,14 +682,14 @@ function FinalCtaSection() {
       <div className="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
         <span className="eyebrow bg-secondary/8 text-secondary">
           <span className="accent-dot" />
-          Reserva por WhatsApp
+          Cotizar es gratis
         </span>
         <h2 className="mt-6 font-display text-4xl font-semibold leading-none text-secondary sm:text-5xl">
-          Si ya viste lo que te interesa, escribinos hoy y te pasamos disponibilidad.
+          Tu evento merece verse profesional. Escribinos y te armamos la propuesta.
         </h2>
         <p className="mx-auto mt-5 max-w-3xl text-lg leading-8 text-secondary/75">
-          Con fecha, zona y servicio elegido ya podemos orientarte mucho mejor
-          y decirte rapido como seguir con la reserva.
+          Con fecha, tipo de evento y lo que te interesa, te respondemos en
+          minutos con disponibilidad, precio y opciones de packs. Sin compromiso.
         </p>
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
           <Link
@@ -622,6 +729,8 @@ export default function Home() {
       <HeroSection availableImages={availableImages} />
       <TrustSection />
       <CurrentOfferSection availableImages={availableImages} />
+      <PacksSection />
+      <TestimonialsSection />
       <ProcessSection />
       <InstagramShowcase />
       <FAQPreviewSection />
