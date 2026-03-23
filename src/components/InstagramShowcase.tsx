@@ -53,7 +53,7 @@ export default function InstagramShowcase() {
           </a>
         </div>
 
-        <div className="hide-scrollbar -mx-4 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 md:hidden">
+        <div className="hide-scrollbar scroll-fade-right -mx-4 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 md:hidden">
           {featuredServices.map((service) => (
             <article
               key={`instagram-${service.id}`}

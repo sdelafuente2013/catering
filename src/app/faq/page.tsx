@@ -45,7 +45,7 @@ export default function FAQPage() {
       />
       <section className="bg-mesh-dark overflow-hidden py-14 text-white lg:py-18">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_0.9fr] lg:px-8">
-          <div>
+          <div className="min-w-0">
             <span className="eyebrow text-primary">
               <span className="accent-dot" />
               Información útil antes de reservar
@@ -60,7 +60,7 @@ export default function FAQPage() {
             </p>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
+          <div className="min-w-0 grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
             {QUICK_FACTS.map((fact) => (
               <div key={fact.label} className="dark-panel rounded-[1.75rem] p-5">
                 <p className="text-xs uppercase tracking-[0.18em] text-gray-500">
@@ -85,6 +85,7 @@ export default function FAQPage() {
               {FAQS.map((faq) => (
                 <details
                   key={faq.pregunta}
+                  id={`faq-${FAQS.indexOf(faq)}`}
                   className="group rounded-[1.5rem] border border-line bg-white px-5 py-4 open:border-primary/30 open:bg-primary/5"
                 >
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left">

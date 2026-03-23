@@ -7,6 +7,7 @@ import {
   CATEGORIAS,
   CONFIG,
   EMPRESA,
+  FEATURED_IDS,
   PROCESO_RESERVA,
   SERVICIOS,
   TIPOS_EVENTO,
@@ -89,14 +90,7 @@ function canEditCantidad(servicioId: string): boolean {
   return Boolean(servicio?.permiteMultiples);
 }
 
-const QUICK_START_IDS = [
-  "copa-agua",
-  "barra-movil",
-  "servicio-mozo",
-  "mantel-redondo",
-  "fuente-chocolate",
-  "robot-led",
-];
+const QUICK_START_IDS = FEATURED_IDS;
 
 export default function PresupuestoClient({
   availableImages,
@@ -342,7 +336,7 @@ export default function PresupuestoClient({
     <>
       <section className="bg-mesh-dark overflow-hidden py-14 text-white lg:py-18">
         <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[1.04fr_0.96fr] lg:px-8">
-          <div>
+          <div className="min-w-0">
             <span className="eyebrow text-primary">
               <span className="accent-dot" />
               Consulta guiada
@@ -368,7 +362,7 @@ export default function PresupuestoClient({
             </div>
           </div>
 
-          <div className="space-y-4">
+          <div className="min-w-0 space-y-4">
             <div className="flex items-end justify-between gap-4">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary/80">
@@ -448,7 +442,7 @@ export default function PresupuestoClient({
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <form onSubmit={handleSubmit}>
             <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-              <div className="space-y-6">
+              <div className="min-w-0 space-y-6">
                 <div className="soft-panel rounded-[2rem] p-6 sm:p-8">
                   <span className="eyebrow text-primary">
                     <span className="accent-dot" />

@@ -37,7 +37,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-18">
         <div className="dark-panel rounded-[2rem] p-6 sm:p-8 lg:p-10">
           <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr_0.95fr]">
-            <div className="max-w-xl">
+            <div className="min-w-0 max-w-xl">
               <span className="eyebrow text-primary">
                 <span className="accent-dot" />
                 Alquiler para eventos

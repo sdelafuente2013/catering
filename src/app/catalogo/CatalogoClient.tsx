@@ -204,7 +204,7 @@ export default function CatalogoClient({
             </div>
           </div>
 
-          <div className="hide-scrollbar -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:hidden">
+          <div className="hide-scrollbar scroll-fade-right -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:hidden">
             {categoriasConConteo.map((categoria, index) => (
               <button
                 key={categoria.id}
@@ -341,7 +341,7 @@ export default function CatalogoClient({
               <button
                 type="button"
                 onClick={() => setCategoriaActiva("todos")}
-                className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                className={`min-h-11 rounded-full px-4 py-2.5 text-sm font-medium transition-colors ${
                   categoriaActiva === "todos"
                     ? "bg-secondary text-white"
                     : "bg-white text-muted hover:bg-accent"
@@ -355,7 +355,7 @@ export default function CatalogoClient({
                   key={categoria.id}
                   type="button"
                   onClick={() => setCategoriaActiva(categoria.id)}
-                  className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                  className={`min-h-11 rounded-full px-4 py-2.5 text-sm font-medium transition-colors ${
                     categoriaActiva === categoria.id
                       ? "bg-primary text-secondary"
                       : "bg-white text-muted hover:bg-accent"
@@ -372,7 +372,7 @@ export default function CatalogoClient({
                     setCategoriaActiva("todos");
                     setBusqueda("");
                   }}
-                  className="rounded-full border border-secondary/12 px-4 py-2 text-sm font-medium text-secondary transition-colors hover:border-primary/35 hover:text-primary"
+                  className="min-h-11 rounded-full border border-secondary/12 px-4 py-2.5 text-sm font-medium text-secondary transition-colors hover:border-primary/35 hover:text-primary"
                 >
                   Limpiar filtros
                 </button>

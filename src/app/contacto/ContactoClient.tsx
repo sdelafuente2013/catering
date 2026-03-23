@@ -141,7 +141,7 @@ export default function ContactoClient({
     <>
       <section className="bg-mesh-dark overflow-hidden py-14 text-white lg:py-18">
         <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8">
-          <div>
+          <div className="min-w-0">
             <span className="eyebrow text-primary">
               <span className="accent-dot" />
               Contacto comercial
@@ -184,7 +184,7 @@ export default function ContactoClient({
             </div>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="min-w-0 grid gap-4 sm:grid-cols-2">
             <div className="soft-panel rounded-[2rem] p-6 text-secondary">
               <p className="text-xs uppercase tracking-[0.18em] text-muted">
                 Canal rápido
@@ -216,7 +216,7 @@ export default function ContactoClient({
       <section className="section-shell bg-mesh-light py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
-            <div className="soft-panel rounded-[2rem] p-6 sm:p-8">
+            <div className="min-w-0 soft-panel rounded-[2rem] p-6 sm:p-8">
               {enviado ? (
                 <div className="text-center">
                   <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-primary/15 text-3xl">

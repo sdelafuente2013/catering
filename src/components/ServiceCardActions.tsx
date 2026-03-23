@@ -19,8 +19,7 @@ export default function ServiceCardActions({
           className="inline-flex min-h-11 items-center justify-center rounded-full bg-green-600 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-green-700"
           aria-label={`Consultar ${servicio.nombre} por WhatsApp`}
         >
-          <span className="sm:hidden">WhatsApp</span>
-          <span className="hidden sm:inline">Consultar por WhatsApp</span>
+          WhatsApp
         </a>
       ) : (
         <Link
@@ -38,8 +37,7 @@ export default function ServiceCardActions({
         }}
         className="inline-flex min-h-11 items-center justify-center rounded-full border border-secondary/12 px-4 py-3 text-sm font-semibold text-secondary transition-colors hover:border-primary/35 hover:text-primary"
       >
-        <span className="sm:hidden">Propuesta</span>
-        <span className="hidden sm:inline">Sumar a propuesta</span>
+        Propuesta
       </Link>
     </div>
   );

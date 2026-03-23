@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 type ProductImageProps = {
   src: string;
@@ -31,27 +31,33 @@ export default function ProductImage({
   const [failedSources, setFailedSources] = useState<Record<string, boolean>>(
     {}
   );
+  const [loaded, setLoaded] = useState(false);
   const showFallback = !hasImage || Boolean(failedSources[src]);
+  const onLoad = useCallback(() => setLoaded(true), []);
 
   return (
     <div
       className={`relative overflow-hidden bg-[linear-gradient(135deg,#1a1a2e_0%,#252540_48%,#c9a84c_165%)] ${className}`}
     >
       {!showFallback && (
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          sizes={sizes}
-          loading={loading}
-          className="object-cover"
-          style={{ objectPosition: imagePosition }}
-          onError={() =>
-            setFailedSources((current) =>
-              current[src] ? current : { ...current, [src]: true }
-            )
-          }
-        />
+        <>
+          <div className={`absolute inset-0 skeleton-shimmer transition-opacity duration-300 ${loaded ? "opacity-0" : "opacity-100"}`} />
+          <Image
+            src={src}
+            alt={alt}
+            fill
+            sizes={sizes}
+            loading={loading}
+            className="object-cover"
+            style={{ objectPosition: imagePosition }}
+            onLoad={onLoad}
+            onError={() =>
+              setFailedSources((current) =>
+                current[src] ? current : { ...current, [src]: true }
+              )
+            }
+          />
+        </>
       )}
 
       {showFallback && (

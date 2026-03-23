@@ -171,6 +171,49 @@ canvas {
   max-width: 100%;
 }
 
+/* Focus visible global */
+:focus-visible {
+  outline: 2px solid rgba(201, 168, 76, 0.6);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+button:focus-visible,
+a:focus-visible,
+select:focus-visible,
+summary:focus-visible {
+  outline: 2px solid rgba(201, 168, 76, 0.6);
+  outline-offset: 2px;
+}
+
+input:focus-visible,
+textarea:focus-visible {
+  outline: none;
+}
+
+/* Skeleton loader */
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%);
+  background-size: 400px 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+/* Scroll fade indicators */
+.scroll-fade {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 3%, black 85%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 3%, black 85%, transparent 100%);
+}
+
+.scroll-fade-right {
+  -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+  mask-image: linear-gradient(to right, black 85%, transparent 100%);
+}
+
 @media (max-width: 639px) {
   .eyebrow {
     gap: 0.45rem;

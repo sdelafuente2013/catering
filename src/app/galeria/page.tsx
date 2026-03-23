@@ -26,7 +26,7 @@ export default function GaleriaPage() {
     <>
       <section className="bg-mesh-dark overflow-hidden py-14 text-white lg:py-18">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_1fr] lg:px-8">
-          <div>
+          <div className="min-w-0">
             <span className="eyebrow text-primary">
               <span className="accent-dot" />
               Galeria e inspiracion
@@ -40,7 +40,7 @@ export default function GaleriaPage() {
             </p>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="min-w-0 grid gap-4 sm:grid-cols-2">
             {CATEGORIAS.map((category, index) => (
               <ProductImage
                 key={category.id}

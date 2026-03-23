@@ -7,6 +7,7 @@ import {
   CATEGORIAS,
   EMPRESA,
   FAQS,
+  FEATURED_IDS,
   SERVICIOS,
   formatDetallePrecio,
   formatPrecioOConsulta,
@@ -23,19 +24,9 @@ const WHATSAPP_URL = buildWhatsAppUrl(
 const PHONE_HREF = getPhoneHref();
 const MAPS_HREF = getMapsHref();
 const INSTAGRAM_URL = EMPRESA.redesSociales.instagram;
-const HOME_FEATURED_IDS = new Set([
-  "copa-agua",
-  "plato-llano-24cm",
-  "barra-movil",
-  "copa-vino",
-  "mantel-redondo",
-  "servicio-mozo",
-  "plato-postre-18cm",
-  "fuente-chocolate",
-  "robot-led",
-]);
+const FEATURED_ID_SET = new Set(FEATURED_IDS);
 const FEATURED_SERVICES = SERVICIOS.filter((service) =>
-  HOME_FEATURED_IDS.has(service.id)
+  FEATURED_ID_SET.has(service.id)
 );
 
 const DIFFERENTIATORS = [
@@ -87,7 +78,7 @@ function HeroSection({ availableImages }: { availableImages: string[] }) {
   return (
     <section className="bg-mesh-dark overflow-hidden text-white">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-22">
-        <div className="relative z-10">
+        <div className="relative z-10 min-w-0">
           <span className="eyebrow text-primary">
             <span className="accent-dot" />
             Alquiler para eventos en Zona Norte
@@ -209,14 +200,14 @@ function HeroSection({ availableImages }: { availableImages: string[] }) {
           </div>
         </div>
 
-        <div>
+        <div className="min-w-0">
           <div className="mb-4 sm:hidden">
             <p className="text-sm font-medium text-gray-300">
               Elegí un rubro y sigue al catálogo:
             </p>
           </div>
 
-          <div className="hide-scrollbar -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:hidden">
+          <div className="hide-scrollbar scroll-fade-right -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:hidden">
             {CATEGORIAS.map((category) => (
               <Link
                 key={category.id}
@@ -235,9 +226,9 @@ function HeroSection({ availableImages }: { availableImages: string[] }) {
                   className="h-52 rounded-[2rem]"
                 />
                 <div className="soft-panel mt-3 rounded-[1.5rem] p-4">
-                  <h2 className="text-base font-semibold text-secondary">
+                  <p className="text-base font-semibold text-secondary">
                     {category.nombre}
-                  </h2>
+                  </p>
                   <p className="mt-2 text-sm leading-6 text-muted">
                     {category.descripcion}
                   </p>
@@ -308,7 +299,7 @@ function CurrentOfferSection({
           description="Mostramos una seleccion corta para decidir rapido desde la home. En el catalogo completo puedes ver toda la vajilla, la cristaleria y los servicios disponibles."
         />
 
-        <div className="hide-scrollbar -mx-4 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 md:hidden">
+        <div className="hide-scrollbar scroll-fade-right -mx-4 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 md:hidden">
           {FEATURED_SERVICES.map((service, index) => {
             const category = CATEGORIAS.find(
               (item) => item.id === service.categoriaId

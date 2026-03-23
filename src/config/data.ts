@@ -693,6 +693,18 @@ export const FAQS: FAQ[] = [
 ];
 
 // --- TIPOS DE EVENTO ---
+export const FEATURED_IDS = [
+  "copa-agua",
+  "plato-llano-24cm",
+  "barra-movil",
+  "copa-vino",
+  "mantel-redondo",
+  "servicio-mozo",
+  "plato-postre-18cm",
+  "fuente-chocolate",
+  "robot-led",
+];
+
 export const TIPOS_EVENTO = [
   "Casamiento",
   "Cumpleanos",

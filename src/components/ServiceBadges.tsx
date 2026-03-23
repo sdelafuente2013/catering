@@ -10,15 +10,15 @@ export default function ServiceBadges({
   }
 
   return (
-    <div className={`flex flex-wrap gap-2 ${className}`}>
+    <ul className={`flex flex-wrap gap-2 ${className}`} aria-label="Ideal para">
       {items.map((item) => (
-        <span
+        <li
           key={item}
           className="rounded-full border border-primary/18 bg-primary/8 px-3 py-1 text-xs font-medium text-secondary"
         >
           {item}
-        </span>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }

@@ -104,6 +104,7 @@ export function getServiceSchemas() {
       "@type": "Service",
       name: `${servicio.nombre} | ${EMPRESA.nombre}`,
       description: servicio.descripcion,
+      image: servicio.imagen ? absoluteUrl(servicio.imagen) : undefined,
       provider: {
         "@type": "LocalBusiness",
         name: EMPRESA.nombre,
